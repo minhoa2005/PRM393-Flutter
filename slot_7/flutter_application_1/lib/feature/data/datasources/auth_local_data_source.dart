@@ -22,4 +22,16 @@ class AuthLocalDataSource {
     // return await _secureStorage.read(key: _refreshTokenKey);
     return null;
   }
+
+  Future<bool> hasTokens() async {
+    // final accessToken = await getAccessToken();
+    // final refreshToken = await getRefreshToken();
+    // return accessToken != null && refreshToken != null;
+    return false;
+  }
+
+  Future<void> clearTokens() async {
+    // await _secureStorage.delete(key: _accessTokenKey);
+    // await _secureStorage.delete(key: _refreshTokenKey);
+  }
 }
