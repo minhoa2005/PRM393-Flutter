@@ -1,0 +1,3 @@
+class IStudent {
+  void input() {}
+}
