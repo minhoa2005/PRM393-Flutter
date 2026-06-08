@@ -10,6 +10,8 @@ import 'package:flutter_application_1/feature/data/mappers/user_mapper/user_mapp
 import 'package:flutter_application_1/feature/data/repositories/auth_repository_impl.dart';
 import 'package:flutter_application_1/feature/domain/repositories/i_auth_repository.dart';
 import 'package:flutter_application_1/feature/presentation/viewmodel/login_viewmodel.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:provider/provider.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -25,7 +27,8 @@ class MyApp extends StatelessWidget {
         ),
 
         Provider<AuthLocalDataSource>(
-          create: (_) => AuthLocalDataSource(const FlutterSecureStorage()),
+          create: (_) =>
+              AuthLocalDataSource(secureStorage: FlutterSecureStorage()),
         ),
 
         Provider<UserMapper>(create: (_) => UserMapper()),

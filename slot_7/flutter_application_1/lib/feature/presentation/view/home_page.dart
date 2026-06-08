@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/app/routes/app_router.dart';
 import 'package:flutter_application_1/feature/presentation/viewmodel/login_viewmodel.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});

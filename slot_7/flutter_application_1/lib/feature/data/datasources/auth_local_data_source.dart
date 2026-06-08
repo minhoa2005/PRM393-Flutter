@@ -1,8 +1,13 @@
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
 class AuthLocalDataSource {
   static const String _accessTokenKey = 'access_token';
   static const String _refreshTokenKey = 'refresh_token';
 
   final FlutterSecureStorage _secureStorage;
+
+  AuthLocalDataSource({required FlutterSecureStorage secureStorage})
+    : _secureStorage = secureStorage;
 
   @override
   Future<void> saveTokens({
