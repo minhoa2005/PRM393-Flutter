@@ -65,6 +65,14 @@ class HomePage extends StatelessWidget {
                       Text('Username: ${user.username}'),
                       const SizedBox(height: 24),
                       FilledButton.icon(
+                        onPressed: () => Navigator.pushNamed(
+                          context,
+                          AppRouter.userManagement,
+                        ),
+                        icon: const Icon(Icons.supervised_user_circle_outlined),
+                        label: const Text('Quản lý người dùng'),
+                      ),
+                      FilledButton.icon(
                         onPressed: () => _logout(context),
                         icon: const Icon(Icons.logout),
                         label: const Text('Đăng xuất'),
