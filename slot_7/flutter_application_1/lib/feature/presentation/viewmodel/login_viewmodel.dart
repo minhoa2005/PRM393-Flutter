@@ -34,7 +34,7 @@ class LoginViewModel extends ChangeNotifier {
       notifyListeners();
       return true;
     } on AppException catch (e) {
-      _errorMessage = e.message;
+      _errorMessage = 'Mat khau hoac tai khoan khong chinh xac';
       _status = LoginStatus.failure;
       notifyListeners();
       return false;
@@ -42,9 +42,23 @@ class LoginViewModel extends ChangeNotifier {
   }
 
   Future<void> logout() async {
-    await _authService.logout();
-    _currentUser = null;
-    _status = LoginStatus.initial;
+    _status = LoginStatus.loading;
+    _errorMessage = null;
     notifyListeners();
+
+    try {
+      await _authService.logout();
+      _currentUser = null;
+      _status = LoginStatus.initial;
+      notifyListeners();
+    } on AppException catch (e) {
+      _errorMessage = e.message;
+      _status = LoginStatus.failure;
+      notifyListeners();
+    } catch (e) {
+      _errorMessage = e.toString();
+      _status = LoginStatus.failure;
+      notifyListeners();
+    }
   }
 }

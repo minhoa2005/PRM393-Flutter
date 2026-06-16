@@ -109,7 +109,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       const SizedBox(height: 16),
-                      if (viewModel.errorMessage != null)
+                      if (viewModel.status == LoginStatus.failure && viewModel.errorMessage != null)
                         Container(
                           padding: const EdgeInsets.all(12),
                           margin: const EdgeInsets.only(bottom: 16),
@@ -117,13 +117,22 @@ class _LoginPageState extends State<LoginPage> {
                             color: Theme.of(context).colorScheme.errorContainer,
                             borderRadius: BorderRadius.circular(8),
                           ),
-                          child: Text(
-                            viewModel.errorMessage!,
-                            style: TextStyle(
-                              color: Theme.of(
-                                context,
-                              ).colorScheme.onErrorContainer,
-                            ),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.error_outline,
+                                color: Theme.of(context).colorScheme.onErrorContainer,
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  viewModel.errorMessage!,
+                                  style: TextStyle(
+                                    color: Theme.of(context).colorScheme.onErrorContainer,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       FilledButton(
