@@ -51,7 +51,6 @@ class _HomePageState extends State<HomePage> {
             ),
             const SizedBox(height: 12),
             Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 _buildStatCard(
                   context,
