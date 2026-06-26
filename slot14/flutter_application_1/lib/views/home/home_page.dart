@@ -22,6 +22,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<HomeViewModel>();
+    final theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -43,67 +44,56 @@ class _HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Welcome to Student Task Manager App',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
-            const SizedBox(height: 32),
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    _buildStatRow(
-                      context,
-                      'Total Tasks',
-                      viewModel.totalTasks.toString(),
-                      Icons.assignment,
-                      Colors.blue,
-                    ),
-                    const Divider(),
-                    _buildStatRow(
-                      context,
-                      'Completed Tasks',
-                      viewModel.completedTasks.toString(),
-                      Icons.check_circle,
-                      Colors.green,
-                    ),
-                    const Divider(),
-                    _buildStatRow(
-                      context,
-                      'Pending Tasks',
-                      viewModel.pendingTasks.toString(),
-                      Icons.pending,
-                      Colors.orange,
-                    ),
-                  ],
-                ),
+              'Overview',
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: 12),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _buildStatCard(
+                  context,
+                  label: 'Total',
+                  value: viewModel.totalTasks.toString(),
+                  icon: Icons.assignment_outlined,
+                  color: theme.colorScheme.primary,
+                ),
+                const SizedBox(width: 12),
+                _buildStatCard(
+                  context,
+                  label: 'Completed',
+                  value: viewModel.completedTasks.toString(),
+                  icon: Icons.check_circle_outline,
+                  color: Colors.green,
+                ),
+                const SizedBox(width: 12),
+                _buildStatCard(
+                  context,
+                  label: 'Pending',
+                  value: viewModel.pendingTasks.toString(),
+                  icon: Icons.schedule,
+                  color: Colors.orange,
+                ),
+              ],
+            ),
+            const SizedBox(height: 28),
             SizedBox(
               width: double.infinity,
               height: 48,
               child: ElevatedButton.icon(
-                onPressed: () {
-                  Navigator.pushNamed(context, AppRoutes.taskList);
+                onPressed: () async {
+                  await Navigator.pushNamed(context, AppRoutes.taskList);
+                  if (context.mounted) {
+                    context.read<HomeViewModel>().loadStatistics();
+                  }
                 },
-                icon: const Icon(Icons.list),
-                label: const Text('Go to Task List',
-                    style: TextStyle(fontSize: 16)),
-              ),
-            ),
-            const SizedBox(height: 16),
-            SizedBox(
-              width: double.infinity,
-              height: 48,
-              child: OutlinedButton.icon(
-                onPressed: () {
-                  Navigator.pushReplacementNamed(context, AppRoutes.login);
-                },
-                icon: const Icon(Icons.logout),
-                label: const Text('Logout', style: TextStyle(fontSize: 16)),
+                icon: const Icon(Icons.list_alt),
+                label: const Text(
+                  'Go to Task List',
+                  style: TextStyle(fontSize: 16),
+                ),
               ),
             ),
           ],
@@ -112,23 +102,49 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildStatRow(BuildContext context, String label, String value,
-      IconData icon, Color color) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Row(
-        children: [
-          Icon(icon, color: color),
-          const SizedBox(width: 12),
-          Text(label, style: const TextStyle(fontSize: 16)),
-          const Spacer(),
-          Text(
-            value,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
+  Widget _buildStatCard(
+    BuildContext context, {
+    required String label,
+    required String value,
+    required IconData icon,
+    required Color color,
+  }) {
+    final theme = Theme.of(context);
+    return Expanded(
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 8),
+          child: Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: color.withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(12),
                 ),
+                child: Icon(icon, color: color, size: 26),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                value,
+                style: theme.textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: color,
+                ),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                label,
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

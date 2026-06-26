@@ -30,6 +30,12 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
+          cardTheme: CardThemeData(
+            elevation: 1.5,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+          ),
         ),
         initialRoute: AppRoutes.login,
         routes: {
